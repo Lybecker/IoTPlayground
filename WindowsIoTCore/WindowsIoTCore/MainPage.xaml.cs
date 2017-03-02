@@ -39,7 +39,7 @@ namespace WindowsIoTCore
 
             _viewModel.PropertyChanged += ViewModel_PropertyChanged;
             
-            SetupTimer();
+            SetupTimer(_viewModel);
             StartStopTimer(_viewModel);
         }
 
@@ -52,15 +52,16 @@ namespace WindowsIoTCore
                 case "AutomaticSendingMessages":
                     StartStopTimer(viewModel);
                     break;
+                case "SendFrequencyInSeconds":
+                    UpdateSendFrequency(viewModel);
+                    break;
             }
         }
 
-        void SetupTimer()
+        void SetupTimer(MyViewModel viewModel)
         {
-            TimeSpan delay = TimeSpan.FromSeconds(1);
-
             _timer = new DispatcherTimer();
-            _timer.Interval = delay;
+            _timer.Interval = TimeSpan.FromSeconds(viewModel.SendFrequencyInSeconds);
             _timer.Tick += (object sender, object e) =>
                 {
                     SendDeviceToCloudMessagesAsync();
@@ -73,6 +74,11 @@ namespace WindowsIoTCore
                 _timer.Start();
             else
                 _timer.Stop();
+        }
+
+        void UpdateSendFrequency(MyViewModel viewModel)
+        {
+            _timer.Interval = TimeSpan.FromSeconds(viewModel.SendFrequencyInSeconds);
         }
 
         async Task SendDeviceToCloudMessagesAsync()  

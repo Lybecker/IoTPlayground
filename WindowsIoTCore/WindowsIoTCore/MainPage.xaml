@@ -9,9 +9,10 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel>
-        <Button Content="I'm a button" Name="SendMessage" Click="SendMessage_Click" />
+            <Button Content="I'm a button" Name="SendMessage" Click="SendMessage_Click" />
             <TextBox Text="{x:Bind Path=_viewModel.Message, Mode=TwoWay}" />
-        <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
+            <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
+            <Slider Value="{x:Bind Path=_viewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
         </StackPanel>
     </Grid>
 </Page>

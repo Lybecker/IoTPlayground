@@ -10,6 +10,7 @@ namespace WindowsIoTCore
         {
             _automaticSendingMessages = true;
             _message = "Hello, Cloud from Windows 10 IoT";
+            _sendFrequencyInSeconds = 1;
         }
 
         private bool _automaticSendingMessages;
@@ -19,6 +20,17 @@ namespace WindowsIoTCore
             set
             {
                 _automaticSendingMessages = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        int _sendFrequencyInSeconds;
+        public int SendFrequencyInSeconds
+        {
+            get { return _sendFrequencyInSeconds; }
+            set
+            {
+                _sendFrequencyInSeconds = value;
                 this.OnPropertyChanged();
             }
         }
@@ -40,11 +52,5 @@ namespace WindowsIoTCore
             this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private void Do()
-        {
-
-
-        }
     }
 }
