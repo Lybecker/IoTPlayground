@@ -1,31 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using System.Text;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Devices.Tpm;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using Windows.System.Threading;
-using System.Threading;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace WindowsIoTCore
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The main and only page in this app
     /// </summary>
     public sealed partial class MainPage : Page
     {
@@ -89,9 +74,14 @@ namespace WindowsIoTCore
             string deviceId = device.GetDeviceId();
             string sasToken = device.GetSASToken(validity: 3600);
 
+            //var deviceClient = DeviceClient.Create(
+            //    iotHubUri,
+            //    AuthenticationMethodFactory.CreateAuthenticationWithToken(deviceId, sasToken), TransportType.Http1);
+
             var deviceClient = DeviceClient.Create(
-                iotHubUri,
-                AuthenticationMethodFactory.CreateAuthenticationWithToken(deviceId, sasToken), TransportType.Http1);
+    "alyiothub.azure-devices.net",
+    AuthenticationMethodFactory.CreateAuthenticationWithRegistrySymmetricKey("windows10iotcore", "PT6A0g3mJv0rcj09YuCA+r9bb9DuZ2i6s2ayYB0kwUM="), TransportType.Http1);
+
 
             var str = _viewModel.Message;
             var message = new Message(Encoding.ASCII.GetBytes(str));
