@@ -111,7 +111,7 @@ namespace WindowsIoTCore
 
             var msgString = JsonConvert.SerializeObject(telemetryDataPoint);
             var msg = new Message(Encoding.ASCII.GetBytes(msgString));
-            
+
             await deviceClient.SendEventAsync(msg);
         }
 
@@ -119,7 +119,7 @@ namespace WindowsIoTCore
         {
             while (true)
             {
-               var msgString = await ReceiveCloudToDeviceMessageAsync(deviceClient);
+                var msgString = await ReceiveCloudToDeviceMessageAsync(deviceClient);
 
                 _viewModel.LatestReceivedMessage = $"Received '{msgString}'";
 

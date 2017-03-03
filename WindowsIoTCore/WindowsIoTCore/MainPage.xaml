@@ -7,13 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <Button Content="I'm a button" Name="SendMessage" Click="SendMessage_Click" />
-            <TextBox Text="{x:Bind Path=_viewModel.Message, Mode=TwoWay}" />
-            <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
-            <Slider Value="{x:Bind Path=_viewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
-            <TextBlock Text="{x:Bind Path=_viewModel.LatestReceivedMessage, Mode=OneWay}" />
-        </StackPanel>
-    </Grid>
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="20,20,0,0">
+        <TextBlock Text="Windows 10 IoT Core sample app for Azure IoT Hub" Style="{ThemeResource HeaderTextBlockStyle}" />
+        <TextBox Text="{x:Bind Path=_viewModel.Message, Mode=TwoWay}" Header="Message" />
+        <Button Content="Send Message" Click="SendMessage_Click" />
+        <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
+        <Slider Value="{x:Bind Path=_viewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
+        <TextBlock Text="{x:Bind Path=_viewModel.LatestReceivedMessage, Mode=OneWay}" />
+    </StackPanel>
 </Page>
