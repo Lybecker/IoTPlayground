@@ -111,7 +111,7 @@ namespace WindowsIoTCore
 
             var msgString = JsonConvert.SerializeObject(telemetryDataPoint);
             var msg = new Message(Encoding.ASCII.GetBytes(msgString));
-
+            
             await deviceClient.SendEventAsync(msg);
         }
 
@@ -121,7 +121,7 @@ namespace WindowsIoTCore
             {
                var msgString = await ReceiveCloudToDeviceMessageAsync(deviceClient);
 
-                _viewModel.LatestReceivedMessage = $"Receive '{msgString}'";
+                _viewModel.LatestReceivedMessage = $"Received '{msgString}'";
 
                 var regEx = Regex.Match(msgString, @"^SendFreqnecy (?<frequency>\d{1,2}?)$", RegexOptions.IgnoreCase);
                 if (regEx.Success)
