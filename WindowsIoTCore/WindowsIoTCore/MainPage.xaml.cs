@@ -6,6 +6,8 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Devices.Tpm;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace WindowsIoTCore
 {
@@ -16,6 +18,7 @@ namespace WindowsIoTCore
     {
         public MyViewModel _viewModel { get; set; }
         private DispatcherTimer _timer;
+        private DeviceClient _deviceClient;
 
         public MainPage()
         {
@@ -23,9 +26,13 @@ namespace WindowsIoTCore
             this._viewModel = new MyViewModel();
 
             _viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            
+
+            _deviceClient = Connect();
+
             SetupTimer(_viewModel);
             StartStopTimer(_viewModel);
+
+            ProcessIncommingMessagesAsync(_deviceClient);
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -49,7 +56,7 @@ namespace WindowsIoTCore
             _timer.Interval = TimeSpan.FromSeconds(viewModel.SendFrequencyInSeconds);
             _timer.Tick += (object sender, object e) =>
                 {
-                    SendDeviceToCloudMessagesAsync();
+                    SendDeviceToCloudMessagesAsync(_deviceClient);
                 };
         }
 
@@ -66,54 +73,75 @@ namespace WindowsIoTCore
             _timer.Interval = TimeSpan.FromSeconds(viewModel.SendFrequencyInSeconds);
         }
 
-        async Task SendDeviceToCloudMessagesAsync()  
+        DeviceClient Connect()
         {
+            // Get credentials from TPM store/chip
             TpmDevice device = new TpmDevice(0); // Use logical device 0 on the TPM by default
 
             string iotHubUri = device.GetHostName();
             string deviceId = device.GetDeviceId();
             string sasToken = device.GetSASToken(validity: 3600);
 
+            // Connect
             var deviceClient = DeviceClient.Create(
                 iotHubUri,
                 AuthenticationMethodFactory.CreateAuthenticationWithToken(deviceId, sasToken), TransportType.Http1);
 
-            var str = _viewModel.Message;
-            var message = new Message(Encoding.ASCII.GetBytes(str));
-
-            await deviceClient.SendEventAsync(message);
+            return deviceClient;
         }
 
-        async Task<string> ReceiveCloudToDeviceMessageAsync()
+        double GetCurrentWindSpeed()
         {
-            TpmDevice myDevice = new TpmDevice(0); // Use logical device 0 on the TPM by default
-            string hubUri = myDevice.GetHostName();
-            string deviceId = myDevice.GetDeviceId();
-            string sasToken = myDevice.GetSASToken(validity: 3600);
+            double avgWindSpeed = 10; // m/s
+            Random rand = new Random();
+            double currentWindSpeed = avgWindSpeed + rand.NextDouble() * 4 - 2;
 
-            var deviceClient = DeviceClient.Create(
-                hubUri,
-                AuthenticationMethodFactory.
-                    CreateAuthenticationWithToken(deviceId, sasToken), TransportType.Http1);
+            return currentWindSpeed;
+        }
 
+        async Task SendDeviceToCloudMessagesAsync(DeviceClient deviceClient)
+        {
+            var windspeed = GetCurrentWindSpeed();
+
+            var telemetryDataPoint = new
+            {
+                windSpeed = windspeed,
+                message = _viewModel.Message
+            };
+
+            var msgString = JsonConvert.SerializeObject(telemetryDataPoint);
+            var msg = new Message(Encoding.ASCII.GetBytes(msgString));
+
+            await deviceClient.SendEventAsync(msg);
+        }
+
+        async Task ProcessIncommingMessagesAsync(DeviceClient deviceClient)
+        {
             while (true)
             {
-                var receivedMessage = await deviceClient.ReceiveAsync();
+               var msgString = await ReceiveCloudToDeviceMessageAsync(deviceClient);
 
-                if (receivedMessage != null)
-                {
-                    var messageData = Encoding.ASCII.GetString(receivedMessage.GetBytes());
-                    await deviceClient.CompleteAsync(receivedMessage);
-                    return messageData;
-                }
+                _viewModel.LatestReceivedMessage = $"Receive '{msgString}'";
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                var regEx = Regex.Match(msgString, @"^SendFreqnecy (?<frequency>\d{1,2}?)$", RegexOptions.IgnoreCase);
+                if (regEx.Success)
+                    _viewModel.SendFrequencyInSeconds = int.Parse(regEx.Groups["frequency"].Value);
             }
+        }
+
+        async Task<string> ReceiveCloudToDeviceMessageAsync(DeviceClient deviceClient)
+        {
+            var receivedMessage = await deviceClient.ReceiveAsync();
+
+            var msgString = Encoding.ASCII.GetString(receivedMessage.GetBytes());
+            await deviceClient.CompleteAsync(receivedMessage);
+
+            return msgString;
         }
 
         private async void SendMessage_Click(object sender, RoutedEventArgs e)
         {
-            await SendDeviceToCloudMessagesAsync();
+            await SendDeviceToCloudMessagesAsync(_deviceClient);
         }
     }
 }

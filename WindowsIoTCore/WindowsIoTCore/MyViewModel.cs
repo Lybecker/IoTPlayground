@@ -10,6 +10,7 @@ namespace WindowsIoTCore
         {
             _automaticSendingMessages = true;
             _message = "Hello, Cloud from Windows 10 IoT";
+            _latestReceivedMessage = "(no message received yet)";
             _sendFrequencyInSeconds = 1;
         }
 
@@ -45,7 +46,18 @@ namespace WindowsIoTCore
                 this.OnPropertyChanged();
             }
         }
-        
+
+        string _latestReceivedMessage;
+        public string LatestReceivedMessage
+        {
+            get { return _latestReceivedMessage; }
+            set
+            {
+                _latestReceivedMessage = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             // Raise the PropertyChanged event, passing the name of the property whose value has changed.

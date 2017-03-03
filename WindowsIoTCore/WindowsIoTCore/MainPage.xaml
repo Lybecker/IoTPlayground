@@ -13,6 +13,7 @@
             <TextBox Text="{x:Bind Path=_viewModel.Message, Mode=TwoWay}" />
             <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
             <Slider Value="{x:Bind Path=_viewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
+            <TextBlock Text="{x:Bind Path=_viewModel.LatestReceivedMessage, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </Page>
