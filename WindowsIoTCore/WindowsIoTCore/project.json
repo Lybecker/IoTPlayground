@@ -3,6 +3,7 @@
     "Microsoft.Azure.Devices.Client": "1.2.4",
     "Microsoft.Devices.Tpm": "1.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+    "MvvmLightLibs": "5.3.0",
     "Newtonsoft.Json": "9.0.1"
   },
   "frameworks": {

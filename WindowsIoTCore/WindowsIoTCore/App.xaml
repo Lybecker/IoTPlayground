@@ -2,7 +2,11 @@
     x:Class="WindowsIoTCore.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="using:WindowsIoTCore.ViewModels"
     xmlns:local="using:WindowsIoTCore"
     RequestedTheme="Light">
-
+    
+    <Application.Resources>
+        <viewModels:ViewModelLocator x:Key="Locator" />
+    </Application.Resources>
 </Application>

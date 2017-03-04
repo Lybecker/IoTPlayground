@@ -30,6 +30,14 @@ namespace WindowsIoTCore
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            GalaSoft.MvvmLight.Messaging.Messenger.Default.Send(new Messages.UnhandledExceptionMessage(e.Exception));
         }
 
         /// <summary>
@@ -72,7 +80,7 @@ namespace WindowsIoTCore
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MainView), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
@@ -102,5 +110,7 @@ namespace WindowsIoTCore
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        
     }
 }

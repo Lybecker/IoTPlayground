@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="WindowsIoTCore.MainPage"
+    x:Class="WindowsIoTCore.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WindowsIoTCore"
@@ -9,10 +9,10 @@
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="20,20,0,0">
         <TextBlock Text="Windows 10 IoT Core sample app for Azure IoT Hub" Style="{ThemeResource HeaderTextBlockStyle}" />
-        <TextBox Text="{x:Bind Path=_viewModel.Message, Mode=TwoWay}" Header="Message" />
-        <Button Content="Send Message" Click="SendMessage_Click" />
-        <ToggleSwitch IsOn="{x:Bind Path=_viewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
-        <Slider Value="{x:Bind Path=_viewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
-        <TextBlock Text="{x:Bind Path=_viewModel.LatestReceivedMessage, Mode=OneWay}" />
+        <TextBox Text="{x:Bind Path=ViewModel.Message, Mode=TwoWay}" Header="Message" />
+        <Button Content="Send Message" Command="{x:Bind ViewModel.SendMessageCommand}" />
+        <ToggleSwitch IsOn="{x:Bind Path=ViewModel.AutomaticSendingMessages, Mode=TwoWay}" Header="Auto send messages" />
+        <Slider Value="{x:Bind Path=ViewModel.SendFrequencyInSeconds, Mode=TwoWay}" Header="Send frequency" Minimum="1" Maximum="60"  />
+        <TextBlock Text="{x:Bind Path=ViewModel.LatestReceivedMessage, Mode=OneWay}" />
     </StackPanel>
 </Page>
