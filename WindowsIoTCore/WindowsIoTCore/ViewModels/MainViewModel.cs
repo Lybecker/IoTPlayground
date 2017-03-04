@@ -29,10 +29,6 @@ namespace WindowsIoTCore.ViewModels
 
             _iotService.ProcessIncommingMessagesAsync(_deviceClient, this);
 
-            _automaticSendingMessages = true;
-            _message = "Hello, Cloud from Windows 10 IoT";
-            _latestReceivedMessage = "(no message received yet)";
-            _sendFrequencyInSeconds = 1;
         }
 
         #region Private Methods
@@ -62,7 +58,7 @@ namespace WindowsIoTCore.ViewModels
         #endregion
 
         #region Properties
-        private bool _automaticSendingMessages;
+        private bool _automaticSendingMessages = true;
         public bool AutomaticSendingMessages
         {
             get { return _automaticSendingMessages; }
@@ -75,7 +71,7 @@ namespace WindowsIoTCore.ViewModels
             }
         }
 
-        int _sendFrequencyInSeconds;
+        int _sendFrequencyInSeconds = 1;
         public int SendFrequencyInSeconds
         {
             get { return _sendFrequencyInSeconds; }
@@ -88,14 +84,14 @@ namespace WindowsIoTCore.ViewModels
             }
         }
 
-        string _message;
+        string _message = "Hello, Cloud from Windows 10 IoT";
         public string Message
         {
             get { return _message; }
             set { Set(ref _message, value); }
         }
 
-        string _latestReceivedMessage;
+        string _latestReceivedMessage = "(no message received yet)";
         public string LatestReceivedMessage
         {
             get { return _latestReceivedMessage; }
