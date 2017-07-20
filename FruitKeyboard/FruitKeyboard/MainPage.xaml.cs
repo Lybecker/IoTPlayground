@@ -19,6 +19,12 @@ namespace FruitKeyboard
         UIElement[] _pinStatusUIElements = null;
         IotHubService _iotHubService = null;
 
+        bool ApplemanNodes
+        {
+            get; set;
+        }
+
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -98,7 +104,7 @@ namespace FruitKeyboard
             try
             {
                 MediaElement mysong = new MediaElement();
-                Windows.Storage.StorageFolder folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+                Windows.Storage.StorageFolder folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync(@"Assets");
                 Windows.Storage.StorageFile file = await folder.GetFileAsync($"{sound}.mp3");
                 var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
                 mysong.SetSource(stream, file.ContentType);
@@ -117,15 +123,15 @@ namespace FruitKeyboard
                 case PinId.PIN_0:
                     return "WhatTheHeck";
                 case PinId.PIN_1:
-                    return "1 (C1)";
+                    return ApplemanNodes ? "Appleman_1(C)" : "1 (C1)";
                 case PinId.PIN_2:
-                    return "2 (Eb)";
+                    return ApplemanNodes ? "Appleman_2(D)" : "2 (Eb)";
                 case PinId.PIN_3:
-                    return "3 (F1)";
+                    return ApplemanNodes ? "Appleman_3(E)" : "3 (F1)";
                 case PinId.PIN_4:
-                    return "4 (Ab)";
+                    return ApplemanNodes ? "Appleman_4(F)" : "4 (Ab)";
                 case PinId.PIN_5:
-                    return "5 (Bb)";
+                    return ApplemanNodes ? "Appleman_5(G)" : "5 (Bb)";
                 case PinId.PIN_6:
                     return "6 (C2)";
                 case PinId.PIN_7:

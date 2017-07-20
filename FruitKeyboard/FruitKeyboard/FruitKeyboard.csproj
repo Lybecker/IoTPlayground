@@ -116,6 +116,11 @@
     <Content Include="Assets\6 %28C2%29.mp3" />
     <Content Include="Assets\7 %28Db%29.mp3" />
     <Content Include="Assets\8 %28F2%29.mp3" />
+    <Content Include="Assets\Appleman_1%28C%29.mp3" />
+    <Content Include="Assets\Appleman_2%28D%29.mp3" />
+    <Content Include="Assets\Appleman_3%28E%29.mp3" />
+    <Content Include="Assets\Appleman_4%28F%29.mp3" />
+    <Content Include="Assets\Appleman_5%28G%29.mp3" />
     <Content Include="Assets\KeyboardPlayingSkill.mp3" />
     <Content Include="Assets\WhatTheHeck.mp3" />
     <Content Include="Properties\Default.rd.xml" />
@@ -142,6 +147,7 @@
       <Name>Windows IoT Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

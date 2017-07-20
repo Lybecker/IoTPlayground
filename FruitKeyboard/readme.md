@@ -14,3 +14,8 @@ Windows.IoT.Core.HWInterfaces](https://github.com/mohankrr/Windows.IoT.Core.HWIn
 | SCL | SCL |
 | SDA | SDA |
 | GPO Pin #5 | IRQ |
+
+
+To play Beverly Hills Cop 3, 5, 3, 3, 6, 3, 2...
+
+To play [Æblemand](ÆblemandNodes.pdf).
